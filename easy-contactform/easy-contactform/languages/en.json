@@ -1,0 +1,7 @@
+{
+    "plugin-data":
+    {
+        "name": "Easy_contactform",
+        "description": "Easy contact form is contact form with tinymce support, you can change text, required input or delete something if you doesn't need (antyspam required)."
+    }
+}
