@@ -11,6 +11,15 @@ global $SITEURL;
 <script>
 if(document.querySelector('.easyContactForm')!==null){
 
+    document.querySelector('.easyContactForm .submit').setAttribute('name','submit');
+    document.querySelector('.easyContactForm .name').setAttribute('name','name');
+    document.querySelector('.easyContactForm .tel').setAttribute('name','tel');
+    document.querySelector('.easyContactForm .email').setAttribute('name','email');
+    document.querySelector('.easyContactForm .message').setAttribute('name','message');
+
+
+
+
 const captcha = `
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Shizuru&family=Special+Elite&display=swap');

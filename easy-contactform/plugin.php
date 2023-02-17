@@ -13,6 +13,10 @@
         'emaillabel'=> '',
         'phonelabel'=> '',
         'contentlabel'=> '',
+
+        'captcha'=>'',
+        'domaincode'=>'',
+        'secretcode'=>'',
             );
         }
         
@@ -64,6 +68,30 @@
 
        </div>
 
+       <br><br>
+       <h3>Captcha info</h3>
+       <hr>
+
+       
+       <div class="bg-light border p-3">
+
+       <p>get the code from <a target="_blank" href="https://www.google.com/recaptcha/admin/create">Google Recaptcha</a> this plugin uses recaptcha v2 (i am not a robot)</p>
+<br>
+       <p>domain code from google</p>
+       <input type="text" name="domaincode" value="'.$this->getValue('domaincode').'">
+<br>
+       <p>secret code from google</p>
+       <input type="text" name="secretcode" value="'.$this->getValue('secretcode').'">
+       <br>
+       <p>Captcha type:</p>
+       <select name="captcha">
+
+       <option value="default"  '.($this->getValue('captcha')==="default"?"selected":"").'>Default Captcha</option>
+       <option value="google" '.($this->getValue('captcha')==="google"?"selected":"").'>Google reCaptcha v2</option>
+
+       </select>
+
+       </div>
 
         <div class="bg-light col-md-12 my-3 py-3 d-block border">
       
@@ -84,7 +112,7 @@
 
     public function adminBodyEnd() {
 
-        include('php/formtinymce.php');
+        include($this->phpPath().'php/formtinymce.php');
  
     }
 
@@ -99,12 +127,18 @@
         header( "Content-Type: text/html; charset=utf-8" );
     
     	if (isset($_POST["submit"])) {
+
+            
+    $captchacontent = $this->getValue('captcha');
+
     		$name = $_POST["name"];
     		$tel = $_POST["tel"];
     		$email = $_POST["email"];
     		$message = $_POST["message"];
+            if($captchacontent=='default'){
     		 $hiddencaptcha = $_POST['hiddencaptcha'];
 			 $captcha = $_POST['captcha'];
+            };
 			$to = $this->getValue('emailmsg');
 		$fromer = $this->getValue('sendermsg');
     
@@ -173,9 +207,34 @@ $link .= $_SERVER['REQUEST_URI'];
     </div>
     ";
 
-    		//Check if simple anti-bot test is correct
-    		if (sha1($captcha) !== $hiddencaptcha) {
-				echo'<div class="easyContactSendNot" style="position: fixed;
+
+
+
+    if($captchacontent=='google'){;
+
+        if (isset($_POST['g-recaptcha-response']) &&! empty($_POST['g-recaptcha-response'])){
+            $secfile = $this->getValue('secretcode');
+            $secret = $secfile;
+            $replaceResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
+             $responseData =json_decode($replaceResponse);
+              if($responseData-> success) {
+                 
+                if (mail($to, $subject, $body,$headers)){
+echo'<div class="easyContactSend" style="position: fixed;
+bottom: 20px;
+left: 5%;
+padding: 10px;
+background: #506d2a;
+width: 90%;
+text-align: center;
+color: #fff;
+box-sizing: border-box;
+border-radius: 5px;
+z-index: 10000;">'.$this->getValue('successmsg').'</div>';
+};
+            
+            }else{
+                echo'<div class="easyContactSendNot" style="position: fixed;
                 bottom: 20px;
                 left: 5%;
                 padding: 10px;
@@ -186,36 +245,64 @@ $link .= $_SERVER['REQUEST_URI'];
                 box-sizing: border-box;
                 border-radius: 5px;
                 z-index: 10000;">'.$this->getValue('errormsg').'</div>';
-
-    	
-	} else {
-		if (mail ($to, $subject, $body,$headers)){
-			echo'<div class="easyContactSend" style="position: fixed;
-            bottom: 20px;
-            left: 5%;
-            padding: 10px;
-            background: #506d2a;
-            width: 90%;
-            text-align: center;
-            color: #fff;
-            box-sizing: border-box;
-            border-radius: 5px;
-            z-index: 10000;">'.$this->getValue('successmsg').'</div>';
-		};
-	};
-
+             }
+        };
+    
+        
     };
 
 
+
+    if($captchacontent=='default'){
+
+    if (sha1($captcha) !== $hiddencaptcha) {
+        echo'<div class="easyContactSendNot" style="position: fixed;
+        bottom: 20px;
+        left: 5%;
+        padding: 10px;
+        background: red;
+        width: 90%;
+        text-align: center;
+        color: #fff;
+        box-sizing: border-box;
+        border-radius: 5px;
+        z-index: 10000;">'.$this->getValue('errormsg').'</div>';
+    } else {
+if (mail($to, $subject, $body,$headers)){
+    echo'<div class="easyContactSend" style="position: fixed;
+    bottom: 20px;
+    left: 5%;
+    padding: 10px;
+    background: #506d2a;
+    width: 90%;
+    text-align: center;
+    color: #fff;
+    box-sizing: border-box;
+    border-radius: 5px;
+    z-index: 10000;">'.$this->getValue('successmsg').'</div>';
+};
+};
+
+};		 
+
+    };
 
     }
 
 
  public function siteBodyEnd(){
-include('php/captcha.php');
+ 
+    $captcha = $this->getValue('captcha');
+    
+        if($captcha=='google'){
+            include($this->phpPath().'php/googlecaptcha.php');
+        };
+    
+        if($captcha=='default'){
+            include($this->phpPath().'php/captcha.php');
+        }
+
 }
-
-
 
 }
 

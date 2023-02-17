@@ -2,6 +2,9 @@
 
 
 <script>
+  if( document.querySelector('#jseditorToolbarRight.btn-group')!==null){
+
+
     document.querySelector('#jseditorToolbarRight.btn-group').insertAdjacentHTML('afterbegin','<button class="btn btn-light ecf-add ">show/hide form settings</button>')
 
     const ecfAdd = document.querySelector('.ecf-add');
@@ -154,28 +157,28 @@ e.preventDefault();
 const formFormula = `<div class="cke-outer"><form class="easyContactForm" role="form" method="post" action="#" accept-charset="UTF-8"> 
         <label for="name" class="nameblank " style="margin-top:.5rem">${document.querySelector('.ecfname').value} <b>${reqValue('.namereq')}</b></label> 
         <input type="text" style=" box-sizing:border-box;width: 100%;border-radius: 5px;padding:10px; border:solid 1px rgba(0,0,0,0.3);" 
-        class="form-control namecf" id="name" name="name" placeholder="" ${reqCheck('.namereq')} >
+        class="form-control namecf  name" id="name"   placeholder="" ${reqCheck('.namereq')} >
 
          <label for="tel" style="margin-top:.5rem">${document.querySelector('.ecfphone').value} <b>${reqValue('.phonereq')}</b></label> 
          
          <input type="tel" style="width: 100%;box-sizing:border-box;border-radius: 5px;padding:10px; border:solid 1px rgba(0,0,0,0.3);" 
-         class="form-control" id="tel" name="tel"  ${reqCheck('.phonereq')}> 
+         class="form-control tel" id="tel"   ${reqCheck('.phonereq')}> 
          
          
          <label for="mail" style="margin-top:.5rem" >${document.querySelector('.ecfmail').value} <b>${reqValue('.emailreq')}</b></label>
          <input type="email" style="width: 100%;box-sizing:border-box;border-radius: 5px;padding:10px; border:solid 1px rgba(0,0,0,0.3);"
-           class="form-control" id="email" name="email" ${reqCheck('.emailreq')}>
+           class="form-control email"  id="email"  ${reqCheck('.emailreq')}>
          
          
            <label for="message" style="margin-top:.5rem">${document.querySelector('.ecfcontent').value} <b>${reqValue('.contentreq')}</b></label>
            
-           <textarea class="form-control"  
+           <textarea class="form-control message"  
            style="width: 100%;box-sizing:border-box;border-radius: 5px; ;padding:10px; border:solid 1px rgba(0,0,0,0.3);" rows="3"
-            placeholder="" name="message" id="message" ${reqCheck('.contentreq')} > 
+            placeholder=""   id="message" ${reqCheck('.contentreq')} > 
             </textarea>
 
            
-            <div style="width:100%;font-size:13px;" class="privacy-div">
+            <div style="width:100%;" class="privacy-div">
             <input type="checkbox" value="zgoda" id="privacy" style="width:20px;margin:10px auto;float:left;" ${reqCheck('.privacyreq')}
         > <p style="margin-top: 20px;
 padding-top: 3px;">${document.querySelector('.ecfprivacy').value} <b>${reqValue('.privacyreq')}</b></p>
@@ -183,7 +186,7 @@ padding-top: 3px;">${document.querySelector('.ecfprivacy').value} <b>${reqValue(
 
   
 
-              <input id="submit" name="submit" type="submit"  style="    padding:10px 25px;
+              <input id="submit" class="submit" type="submit"  style="    padding:10px 25px;
              background:${document.querySelector('.ecfbtn').value};
               color:#fff;border:0;
               padding:5px 15px;
@@ -216,7 +219,7 @@ ecfSettings.classList.toggle('d-none' );
 
 
 
-
+}
 
 
 </script>
